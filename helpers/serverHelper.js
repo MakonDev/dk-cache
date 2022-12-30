@@ -39,6 +39,31 @@ module.exports = {
     const chunkedETRData = await searchForETRProjections()
     return chunkedETRData
   },
+  registerETRStuff: async function(etrData) {
+    // do the finalData combinations
+    let finalData = []
+    for (const playerChunk of chunkedETRData) {
+      let playerChunkData = {}
+      playerChunkData["player"] = playerChunk.player
+      playerChunkData["team1"] = playerChunk.team1
+      playerChunkData["team2"] = playerChunk.team2
+      playerChunkData["minutes"] = playerChunk.minutes
+      // points
+      let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      console.log(playerCategoryData)
+      console.log(playerChunk.player)
+      if (playerCategoryData.length > 0) {
+
+      } else {
+        playerChunkData["points"] = {
+          
+        }
+      }
+      
+    }
+    await client.set("finaldata", JSON.stringify(etrData), {'EX': 3600})
+    return etrData
+  },
   search: async function(client) {
     const dkEvents = await searchDKForEvents()
     const filteredEvents = dkEvents.map((event) => {
