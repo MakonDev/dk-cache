@@ -76,7 +76,7 @@ setInterval(async () => {
   if (date.getHours() >= 17 && date.getHours() <= 23) {  
     serverHelper.search(redisClient)
   }
-}, 1800000);
+}, 300000);
 
 const port = process.env.PORT || 8081;
 app.listen(port);
