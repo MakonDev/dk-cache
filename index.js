@@ -7,9 +7,9 @@ const serverHelper = require("./helpers/serverHelper.js")
 let redisClient;
 
 (async () => {
-  process.env.REDIS_URL ?
+  process.env.REDIS_TLS_URL ?
     redisClient = redis.createClient({
-      url: process.env.REDIS_URL,
+      url: process.env.REDIS_TLS_URL,
       socket: {
         tls: true,
         rejectUnauthorized: false
