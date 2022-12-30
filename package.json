@@ -1,0 +1,25 @@
+{
+  "name": "dk-cache",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js --use_strict",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Sadler",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.1",
+    "connect-redis": "^6.1.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "puppeteer": "^19.4.1",
+    "redis": "^4.3.0",
+    "set-random-interval": "^1.1.0",
+    "util": "^0.12.4",
+    "path": "^0.12.7"
+  }
+}
