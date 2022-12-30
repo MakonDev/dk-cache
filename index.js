@@ -58,9 +58,17 @@ app.get("/syncData", async(req, res) => {
   }
 });
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+app.post("/acceptETR", async(req, res) => {
+  if (req.headers["dk-secret"] === process.env.DK_SECRET) {
+    if (req.body) {
+      console.log(req.body)
+    } else {
+      res.status(200).json("No JSON body passed, no token searched.")
+    }
+  } else {
+    res.status(401).json("Endpoint forbidden")
+  }
+})
 
 setInterval(async () => {
   const date = new Date();

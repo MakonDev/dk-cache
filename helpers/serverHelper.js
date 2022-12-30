@@ -1,6 +1,5 @@
 require('dotenv').config()
 const axios = require("axios");
-const puppeteer = require('puppeteer');
 
 // Points, Rebounds, Assists, Threes, Combos, Blocks/Steal ("Blocks ", "Steals ", "Steals + Blocks"), Turnovers
 const gameCategoriesWeWant = [1215, 1216, 1217, 1218, 583, 1219, 1220]
