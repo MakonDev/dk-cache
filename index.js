@@ -39,7 +39,7 @@ app.get("/ping", async(req, res) => {
 app.get("/getData", async(req, res) => {
   if (req.headers["dk-secret"] === process.env.DK_SECRET) {
     let data = []
-    const returned = await redisClient.get("data")
+    const returned = await redisClient.get("propdata")
     if (returned) {
       data = JSON.parse(returned)
     }
