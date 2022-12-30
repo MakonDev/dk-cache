@@ -8,7 +8,9 @@ const blocksStealsNames = ["Blocks ", "Steals ", "Steals + Blocks"]
 const comboSubcategoryNames = ["Pts + Reb + Ast","Pts + Reb","Pts + Ast","Ast + Reb"]
 
 const searchForETRProjections = async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+} );
   const page = await browser.newPage();
   await page.goto('https://establishtherun.com/wp-login.php?redirect_to=%2F')
   await page.waitForTimeout(5000)
