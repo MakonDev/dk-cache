@@ -62,6 +62,7 @@ app.post("/acceptETR", async(req, res) => {
   if (req.headers["dk-secret"] === process.env.DK_SECRET) {
     if (req.body) {
       console.log(req.body)
+      res.status(200).json("Thanks!")
     } else {
       res.status(200).json("No JSON body passed, no token searched.")
     }
