@@ -19,9 +19,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "puppeteer": "^19.4.1",
     "redis": "^4.3.0",
-    "set-random-interval": "^1.1.0",
     "util": "^0.12.4",
     "path": "^0.12.7"
   }
