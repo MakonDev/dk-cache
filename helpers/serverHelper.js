@@ -53,15 +53,15 @@ module.exports = {
       let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["points"] = {
-          projection: playerChunk.points,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.points),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date
         }
       } else {
         playerChunkData["points"] = {
-          projection: playerChunk.points,
+          projection: Number(playerChunk.points),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -72,15 +72,15 @@ module.exports = {
       playerCategoryData = propData.assists.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["assists"] = {
-          projection: playerChunk.assists,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.assists),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["assists"] = {
-          projection: playerChunk.assists,
+          projection: (playerChunk.assists),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -91,15 +91,15 @@ module.exports = {
       playerCategoryData = propData.threes.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["threes"] = {
-          projection: playerChunk.threes,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.threes),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["threes"] = {
-          projection: playerChunk.threes,
+          projection: Number(playerChunk.threes),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -110,15 +110,15 @@ module.exports = {
       playerCategoryData = propData.rebounds.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["rebounds"] = {
-          projection: playerChunk.rebounds,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.rebounds),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["rebounds"] = {
-          projection: playerChunk.rebounds,
+          projection: Number(playerChunk.rebounds),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -129,15 +129,15 @@ module.exports = {
       playerCategoryData = propData.turnovers.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["turnovers"] = {
-          projection: playerChunk.turnovers,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.turnovers),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["turnovers"] = {
-          projection: playerChunk.turnovers,
+          projection: Number(playerChunk.turnovers),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -148,15 +148,15 @@ module.exports = {
       playerCategoryData = propData.blocks.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["blocks"] = {
-          projection: playerChunk.blocks,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.blocks),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["blocks"] = {
-          projection: playerChunk.blocks,
+          projection: Number(playerChunk.blocks),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -167,15 +167,15 @@ module.exports = {
       playerCategoryData = propData.steals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["steals"] = {
-          projection: playerChunk.steals,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.steals),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["steals"] = {
-          projection: playerChunk.steals,
+          projection: Number(playerChunk.steals),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -186,15 +186,15 @@ module.exports = {
       playerCategoryData = propData.blocksNsteals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["blocksNsteals"] = {
-          projection: playerChunk.steals + playerChunk.blocks,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.steals) + Number(playerChunk.blocks),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["blocksNsteals"] = {
-          projection: playerChunk.steals + playerChunk.blocks,
+          projection: Number(playerChunk.steals) + Number(playerChunk.blocks),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -205,15 +205,15 @@ module.exports = {
       playerCategoryData = propData.blocksNsteals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["blocksNsteals"] = {
-          projection: playerChunk.steals + playerChunk.blocks,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.steals) + Number(playerChunk.blocks),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["blocksNsteals"] = {
-          projection: playerChunk.steals + playerChunk.blocks,
+          projection: Number(playerChunk.steals) + Number(playerChunk.blocks),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -224,15 +224,15 @@ module.exports = {
       playerCategoryData = propData.PRA.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["PRA"] = {
-          projection: playerChunk.points + playerChunk.assists + playerChunk.rebounds,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.points) + Number(playerChunk.assists) + Number(playerChunk.rebounds),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["PRA"] = {
-          projection: playerChunk.points + playerChunk.assists + playerChunk.rebounds,
+          projection: Number(playerChunk.points) + Number(playerChunk.assists) + Number(playerChunk.rebounds),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -243,15 +243,15 @@ module.exports = {
       playerCategoryData = propData.PR.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["PR"] = {
-          projection: playerChunk.points + playerChunk.rebounds,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.points) + Number(playerChunk.rebounds),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["PR"] = {
-          projection: playerChunk.points + playerChunk.rebounds,
+          projection: Number(playerChunk.points) + Number(playerChunk.rebounds),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -262,15 +262,15 @@ module.exports = {
       playerCategoryData = propData.PA.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["PA"] = {
-          projection: playerChunk.points + playerChunk.assists,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.points) + Number(playerChunk.assists),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["PA"] = {
-          projection: playerChunk.points + playerChunk.assists,
+          projection: Number(playerChunk.points) + Number(playerChunk.assists),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -281,15 +281,15 @@ module.exports = {
       playerCategoryData = propData.AR.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["AR"] = {
-          projection: playerChunk.assists + playerChunk.rebounds,
-          line: playerCategoryData[0].outcomes[0].line,
+          projection: Number(playerChunk.assists) + Number(playerChunk.rebounds),
+          line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
         }
       } else {
         playerChunkData["AR"] = {
-          projection: playerChunk.assists + playerChunk.rebounds,
+          projection: Number(playerChunk.assists) + Number(playerChunk.rebounds),
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
@@ -331,7 +331,6 @@ module.exports = {
       const date = new Date(event.date.slice(0,23)+"Z")
       console.log(event.name)
       console.log(date.toLocaleString())
-      console.log(console.log(subtractHours(5, date)))
       console.log("")
       const firstEvent = await searchDKEventForProps(event.id)
       const eventCategories = firstEvent.eventCategories
