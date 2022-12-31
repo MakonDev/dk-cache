@@ -75,14 +75,146 @@ module.exports = {
         }
       } else {
         playerChunkData["assists"] = {
-          projection: playerChunk.points,
+          projection: playerChunk.assists,
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
           date: "N/A"
         }
       }
-      
+      // threes
+      playerCategoryData = propData.threes.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["threes"] = {
+          projection: playerChunk.threes,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["threes"] = {
+          projection: playerChunk.threes,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // rebounds
+      playerCategoryData = propData.rebounds.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["rebounds"] = {
+          projection: playerChunk.rebounds,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["rebounds"] = {
+          projection: playerChunk.rebounds,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // turnovers
+      playerCategoryData = propData.turnovers.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["turnovers"] = {
+          projection: playerChunk.turnovers,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["turnovers"] = {
+          projection: playerChunk.turnovers,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // blocks
+      playerCategoryData = propData.blocks.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["blocks"] = {
+          projection: playerChunk.blocks,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["blocks"] = {
+          projection: playerChunk.blocks,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // steals
+      playerCategoryData = propData.steals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["steals"] = {
+          projection: playerChunk.steals,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["steals"] = {
+          projection: playerChunk.steals,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // blocksNsteals
+      playerCategoryData = propData.blocksNsteals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["blocksNsteals"] = {
+          projection: playerChunk.steals + playerChunk.blocks,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["blocksNsteals"] = {
+          projection: playerChunk.steals + playerChunk.blocks,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // blocksNsteals
+      playerCategoryData = propData.blocksNsteals.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["blocksNsteals"] = {
+          projection: playerChunk.steals + playerChunk.blocks,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["blocksNsteals"] = {
+          projection: playerChunk.steals + playerChunk.blocks,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
     }
     await client.set("finaldata", JSON.stringify(etrData), {'EX': 3600})
     return etrData

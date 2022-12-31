@@ -80,7 +80,7 @@ app.post("/acceptETR", async(req, res) => {
         data = JSON.parse(returned)
         //serverHelper.etrSearch(req.body)
       }
-      await client.set("etrdata", JSON.stringify(req.body), {'EX': 3600})
+      await redisClient.set("etrdata", JSON.stringify(req.body), {'EX': 3600})
       res.status(200).json(req.body)
     } else {
       res.status(200).json("No JSON body passed, no token searched.")
