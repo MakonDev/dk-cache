@@ -58,6 +58,19 @@ app.get("/syncData", async(req, res) => {
   }
 });
 
+app.get("/getETRData", async(req, res) => {
+  if (req.headers["dk-secret"] === process.env.DK_SECRET) {
+    let data = []
+    const returned = await redisClient.get("etrdata")
+    if (returned) {
+      data = JSON.parse(returned)
+    }
+    res.status(200).json(data)
+  } else {
+    res.status(401).json("Endpoint forbidden")
+  }
+});
+
 app.post("/acceptETR", async(req, res) => {
   if (req.headers["dk-secret"] === process.env.DK_SECRET) {
     if (req.body) {
