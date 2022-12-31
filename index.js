@@ -108,7 +108,7 @@ app.post("/acceptETR", async(req, res) => {
 setInterval(async () => {
   const date = new Date();
   console.log(`Current hour: ${date.getHours()}`)
-  if (date.getHours() < 5 && date.getHours() >= 15) {  
+  if (date.getHours() < 5 || date.getHours() >= 15) {  
     serverHelper.search(redisClient)
   } else {
     console.log("Out of hours!")
