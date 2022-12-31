@@ -293,6 +293,7 @@ module.exports = {
       }
       finalData.push(playerChunkData)
     }
+    console.log(`Done with ${finalData.length} final data points`)
     await client.set("finaldata", JSON.stringify(finalData), {'EX': 3600})
     return finalData
   },
