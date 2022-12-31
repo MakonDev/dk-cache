@@ -1,5 +1,6 @@
 require('dotenv').config()
 const axios = require("axios");
+var moment = require('moment-timezone');
 
 // Points, Rebounds, Assists, Threes, Combos, Blocks/Steal ("Blocks ", "Steals ", "Steals + Blocks"), Turnovers
 const gameCategoriesWeWant = [1215, 1216, 1217, 1218, 583, 1219, 1220]
@@ -329,8 +330,10 @@ module.exports = {
     }
     for await (let event of filteredEvents) {
       const date = new Date(event.date.slice(0,23)+"Z")
+      const time = date.getTime()
+      const mom = moment(time).tz('America/New_York').format('YYYY-MM-DD HH:mm')
+      console.log(mom)
       console.log(event.name)
-      console.log(date.toLocaleString())
       console.log("")
       const firstEvent = await searchDKEventForProps(event.id)
       const eventCategories = firstEvent.eventCategories
@@ -346,7 +349,7 @@ module.exports = {
                   player: offer.label.split(" Turnovers")[0],
                   open: offer.isOpen,
                   suspended: offer.isSuspended,
-                  date: date.toLocaleString(),
+                  date: mom,
                   game: event.name,
                   team1: event.teamShortName1,
                   team2: event.teamShortName2,
@@ -378,7 +381,7 @@ module.exports = {
                   player: offer.label.split(" Points")[0],
                   open: offer.isOpen,
                   suspended: offer.isSuspended,
-                  date: date.toLocaleString(),
+                  date: mom,
                   game: event.name,
                   team1: event.teamShortName1,
                   team2: event.teamShortName2,
@@ -410,7 +413,7 @@ module.exports = {
                   player: offer.label.split(" Rebounds")[0],
                   open: offer.isOpen,
                   suspended: offer.isSuspended,
-                  date: date.toLocaleString(),
+                  date: mom,
                   game: event.name,
                   team1: event.teamShortName1,
                   team2: event.teamShortName2,
@@ -442,7 +445,7 @@ module.exports = {
                   player: offer.label.split(" Assists")[0],
                   open: offer.isOpen,
                   suspended: offer.isSuspended,
-                  date: date.toLocaleString(),
+                  date: mom,
                   game: event.name,
                   team1: event.teamShortName1,
                   team2: event.teamShortName2,
@@ -474,7 +477,7 @@ module.exports = {
                   player: offer.label.split(" Three Pointers Made")[0],
                   open: offer.isOpen,
                   suspended: offer.isSuspended,
-                  date: date.toLocaleString(),
+                  date: mom,
                   game: event.name,
                   team1: event.teamShortName1,
                   team2: event.teamShortName2,
@@ -508,7 +511,7 @@ module.exports = {
                     player: offer.label.split(" Blocks")[0],
                     open: offer.isOpen,
                     suspended: offer.isSuspended,
-                    date: date.toLocaleString(),
+                    date: mom,
                     game: event.name,
                     team1: event.teamShortName1,
                     team2: event.teamShortName2,
@@ -536,7 +539,7 @@ module.exports = {
                     player: offer.label.split(" Steals")[0],
                     open: offer.isOpen,
                     suspended: offer.isSuspended,
-                    date: date.toLocaleString(),
+                    date: mom,
                     game: event.name,
                     team1: event.teamShortName1,
                     team2: event.teamShortName2,
@@ -564,7 +567,7 @@ module.exports = {
                     player: offer.label.split(" Steals + Blocks")[0],
                     open: offer.isOpen,
                     suspended: offer.isSuspended,
-                    date: date.toLocaleString(),
+                    date: mom,
                     game: event.name,
                     team1: event.teamShortName1,
                     team2: event.teamShortName2,
@@ -600,7 +603,7 @@ module.exports = {
                       player: offer.label.split(" Points + Assists + Rebounds")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
-                      date: date.toLocaleString(),
+                      date: mom,
                       game: event.name,
                       team1: event.teamShortName1,
                       team2: event.teamShortName2,
@@ -628,7 +631,7 @@ module.exports = {
                       player: offer.label.split(" Points + Rebounds")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
-                      date: date.toLocaleString(),
+                      date: mom,
                       game: event.name,
                       team1: event.teamShortName1,
                       team2: event.teamShortName2,
@@ -656,7 +659,7 @@ module.exports = {
                       player: offer.label.split(" Points + Assists")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
-                      date: date.toLocaleString(),
+                      date: mom,
                       game: event.name,
                       team1: event.teamShortName1,
                       team2: event.teamShortName2,
@@ -684,7 +687,7 @@ module.exports = {
                       player: offer.label.split(" Assists + Rebounds")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
-                      date: date.toLocaleString(),
+                      date: mom,
                       game: event.name,
                       team1: event.teamShortName1,
                       team2: event.teamShortName2,
