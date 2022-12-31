@@ -78,7 +78,7 @@ app.post("/acceptETR", async(req, res) => {
       const returned = await redisClient.get("propdata")
       if (returned) {
         data = JSON.parse(returned)
-        await serverHelper.registerETRStuff(req.body, data, redisClient)
+        await serverHelper.registerETRStuff(req.body.chunkedETRData, data, redisClient)
       }
       await redisClient.set("etrdata", JSON.stringify(req.body), {'EX': 3600})
       res.status(200).json(req.body)
