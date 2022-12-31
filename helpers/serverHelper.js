@@ -332,183 +332,24 @@ module.exports = {
       const date = new Date(event.date.slice(0,23)+"Z")
       const time = date.getTime()
       const mom = moment(time).tz('America/New_York').format('YYYY-MM-DD HH:mm')
+      const currentdate = new Date()
+      const currenttime = date.getTime()
       console.log(mom)
       console.log(event.name)
       console.log("")
-      const firstEvent = await searchDKEventForProps(event.id)
-      const eventCategories = firstEvent.eventCategories
-      for (let category of gameCategoriesWeWant) {
-        const cat = eventCategories.filter((propType) => propType.categoryId === category)
-        // turnovers
-        if (category === 1220 && cat.length > 0) {
-          if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
-            const offers = cat[0].componentizedOffers[0].offers[0]
-            const turnoverPropData = offers.map((offer) => {
-              return (
-                {
-                  player: offer.label.split(" Turnovers")[0],
-                  open: offer.isOpen,
-                  suspended: offer.isSuspended,
-                  date: mom,
-                  game: event.name,
-                  team1: event.teamShortName1,
-                  team2: event.teamShortName2,
-                  outcomes: [
-                    {
-                      label: offer.outcomes[0].label,
-                      odds: offer.outcomes[0].oddsAmerican,
-                      line: offer.outcomes[0].line
-                    },
-                    {
-                      label: offer.outcomes[1].label,
-                      odds: offer.outcomes[1].oddsAmerican,
-                      line: offer.outcomes[1].line
-                    }
-                  ]
-                }
-              )
-            })
-            propData.turnovers.push(turnoverPropData)
-          }
-        } 
-        // points
-        else if (category === 1215 && cat.length > 0) {
-          if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
-            const offers = cat[0].componentizedOffers[0].offers[0]
-            const pointsPropData = offers.map((offer) => {
-              return (
-                {
-                  player: offer.label.split(" Points")[0],
-                  open: offer.isOpen,
-                  suspended: offer.isSuspended,
-                  date: mom,
-                  game: event.name,
-                  team1: event.teamShortName1,
-                  team2: event.teamShortName2,
-                  outcomes: [
-                    {
-                      label: offer.outcomes[0].label,
-                      odds: offer.outcomes[0].oddsAmerican,
-                      line: offer.outcomes[0].line
-                    },
-                    {
-                      label: offer.outcomes[1].label,
-                      odds: offer.outcomes[1].oddsAmerican,
-                      line: offer.outcomes[1].line
-                    }
-                  ]
-                }
-              )
-            })
-            propData.points.push(pointsPropData)
-          }
-        }
-        // rebounds
-        else if (category === 1216 && cat.length > 0) {
-          if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
-            const offers = cat[0].componentizedOffers[0].offers[0]
-            const reboundsPropData = offers.map((offer) => {
-              return (
-                {
-                  player: offer.label.split(" Rebounds")[0],
-                  open: offer.isOpen,
-                  suspended: offer.isSuspended,
-                  date: mom,
-                  game: event.name,
-                  team1: event.teamShortName1,
-                  team2: event.teamShortName2,
-                  outcomes: [
-                    {
-                      label: offer.outcomes[0].label,
-                      odds: offer.outcomes[0].oddsAmerican,
-                      line: offer.outcomes[0].line
-                    },
-                    {
-                      label: offer.outcomes[1].label,
-                      odds: offer.outcomes[1].oddsAmerican,
-                      line: offer.outcomes[1].line
-                    }
-                  ]
-                }
-              )
-            })
-            propData.rebounds.push(reboundsPropData)
-          }
-        }
-        // assists
-        else if (category === 1217 && cat.length > 0) {
-          if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
-            const offers = cat[0].componentizedOffers[0].offers[0]
-            const assistsPropData = offers.map((offer) => {
-              return (
-                {
-                  player: offer.label.split(" Assists")[0],
-                  open: offer.isOpen,
-                  suspended: offer.isSuspended,
-                  date: mom,
-                  game: event.name,
-                  team1: event.teamShortName1,
-                  team2: event.teamShortName2,
-                  outcomes: [
-                    {
-                      label: offer.outcomes[0].label,
-                      odds: offer.outcomes[0].oddsAmerican,
-                      line: offer.outcomes[0].line
-                    },
-                    {
-                      label: offer.outcomes[1].label,
-                      odds: offer.outcomes[1].oddsAmerican,
-                      line: offer.outcomes[1].line
-                    }
-                  ]
-                }
-              )
-            })
-            propData.assists.push(assistsPropData)
-          }
-        }
-        // threes
-        else if (category === 1218 && cat.length > 0) {
-          if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
-            const offers = cat[0].componentizedOffers[0].offers[0]
-            const threesPropData = offers.map((offer) => {
-              return (
-                {
-                  player: offer.label.split(" Three Pointers Made")[0],
-                  open: offer.isOpen,
-                  suspended: offer.isSuspended,
-                  date: mom,
-                  game: event.name,
-                  team1: event.teamShortName1,
-                  team2: event.teamShortName2,
-                  outcomes: [
-                    {
-                      label: offer.outcomes[0].label,
-                      odds: offer.outcomes[0].oddsAmerican,
-                      line: offer.outcomes[0].line
-                    },
-                    {
-                      label: offer.outcomes[1].label,
-                      odds: offer.outcomes[1].oddsAmerican,
-                      line: offer.outcomes[1].line
-                    }
-                  ]
-                }
-              )
-            })
-            propData.threes.push(threesPropData)
-          }
-        }
-        // blocks, steals and blocks + steals
-        else if (category === 1219 && cat.length > 0) {
-          for (let subcatName of blocksStealsNames) {
-            const subcat = cat[0].componentizedOffers.filter((offer) => offer.subcategoryName === subcatName)
-            const offers = subcat[0].offers[0]
-            if (subcatName === "Blocks ") {
-              const blocksPropData = offers.map((offer) => {
+      if (moment(currenttime).tz('America/New_York').date() === moment(time).tz('America/New_York').date()) {
+        const firstEvent = await searchDKEventForProps(event.id)
+        const eventCategories = firstEvent.eventCategories
+        for (let category of gameCategoriesWeWant) {
+          const cat = eventCategories.filter((propType) => propType.categoryId === category)
+          // turnovers
+          if (category === 1220 && cat.length > 0) {
+            if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
+              const offers = cat[0].componentizedOffers[0].offers[0]
+              const turnoverPropData = offers.map((offer) => {
                 return (
                   {
-                    player: offer.label.split(" Blocks")[0],
+                    player: offer.label.split(" Turnovers")[0],
                     open: offer.isOpen,
                     suspended: offer.isSuspended,
                     date: mom,
@@ -530,13 +371,17 @@ module.exports = {
                   }
                 )
               })
-              propData.blocks.push(blocksPropData)
+              propData.turnovers.push(turnoverPropData)
             }
-            else if (subcatName === "Steals ") {
-              const stealsPropData = offers.map((offer) => {
+          } 
+          // points
+          else if (category === 1215 && cat.length > 0) {
+            if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
+              const offers = cat[0].componentizedOffers[0].offers[0]
+              const pointsPropData = offers.map((offer) => {
                 return (
                   {
-                    player: offer.label.split(" Steals")[0],
+                    player: offer.label.split(" Points")[0],
                     open: offer.isOpen,
                     suspended: offer.isSuspended,
                     date: mom,
@@ -558,49 +403,115 @@ module.exports = {
                   }
                 )
               })
-              propData.steals.push(stealsPropData)
-            }
-            else if (subcatName === "Steals + Blocks") {
-              const stealsNblocksPropData = offers.map((offer) => {
-                return (
-                  {
-                    player: offer.label.split(" Steals + Blocks")[0],
-                    open: offer.isOpen,
-                    suspended: offer.isSuspended,
-                    date: mom,
-                    game: event.name,
-                    team1: event.teamShortName1,
-                    team2: event.teamShortName2,
-                    outcomes: [
-                      {
-                        label: offer.outcomes[0].label,
-                        odds: offer.outcomes[0].oddsAmerican,
-                        line: offer.outcomes[0].line
-                      },
-                      {
-                        label: offer.outcomes[1].label,
-                        odds: offer.outcomes[1].oddsAmerican,
-                        line: offer.outcomes[1].line
-                      }
-                    ]
-                  }
-                )
-              })
-              propData.blocksNsteals.push(stealsNblocksPropData)
+              propData.points.push(pointsPropData)
             }
           }
-        }
-        // Combos
-        else if (category === 583 && cat.length > 0) {
-          for (let subcatName of comboSubcategoryNames) {
-            const subcat = cat[0].componentizedOffers.filter((offer) => offer.subcategoryName === subcatName)
-            if (subcat.length > 0) {
+          // rebounds
+          else if (category === 1216 && cat.length > 0) {
+            if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
+              const offers = cat[0].componentizedOffers[0].offers[0]
+              const reboundsPropData = offers.map((offer) => {
+                return (
+                  {
+                    player: offer.label.split(" Rebounds")[0],
+                    open: offer.isOpen,
+                    suspended: offer.isSuspended,
+                    date: mom,
+                    game: event.name,
+                    team1: event.teamShortName1,
+                    team2: event.teamShortName2,
+                    outcomes: [
+                      {
+                        label: offer.outcomes[0].label,
+                        odds: offer.outcomes[0].oddsAmerican,
+                        line: offer.outcomes[0].line
+                      },
+                      {
+                        label: offer.outcomes[1].label,
+                        odds: offer.outcomes[1].oddsAmerican,
+                        line: offer.outcomes[1].line
+                      }
+                    ]
+                  }
+                )
+              })
+              propData.rebounds.push(reboundsPropData)
+            }
+          }
+          // assists
+          else if (category === 1217 && cat.length > 0) {
+            if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
+              const offers = cat[0].componentizedOffers[0].offers[0]
+              const assistsPropData = offers.map((offer) => {
+                return (
+                  {
+                    player: offer.label.split(" Assists")[0],
+                    open: offer.isOpen,
+                    suspended: offer.isSuspended,
+                    date: mom,
+                    game: event.name,
+                    team1: event.teamShortName1,
+                    team2: event.teamShortName2,
+                    outcomes: [
+                      {
+                        label: offer.outcomes[0].label,
+                        odds: offer.outcomes[0].oddsAmerican,
+                        line: offer.outcomes[0].line
+                      },
+                      {
+                        label: offer.outcomes[1].label,
+                        odds: offer.outcomes[1].oddsAmerican,
+                        line: offer.outcomes[1].line
+                      }
+                    ]
+                  }
+                )
+              })
+              propData.assists.push(assistsPropData)
+            }
+          }
+          // threes
+          else if (category === 1218 && cat.length > 0) {
+            if (cat[0].componentizedOffers.length > 0 && cat[0].componentizedOffers[0].offers) {
+              const offers = cat[0].componentizedOffers[0].offers[0]
+              const threesPropData = offers.map((offer) => {
+                return (
+                  {
+                    player: offer.label.split(" Three Pointers Made")[0],
+                    open: offer.isOpen,
+                    suspended: offer.isSuspended,
+                    date: mom,
+                    game: event.name,
+                    team1: event.teamShortName1,
+                    team2: event.teamShortName2,
+                    outcomes: [
+                      {
+                        label: offer.outcomes[0].label,
+                        odds: offer.outcomes[0].oddsAmerican,
+                        line: offer.outcomes[0].line
+                      },
+                      {
+                        label: offer.outcomes[1].label,
+                        odds: offer.outcomes[1].oddsAmerican,
+                        line: offer.outcomes[1].line
+                      }
+                    ]
+                  }
+                )
+              })
+              propData.threes.push(threesPropData)
+            }
+          }
+          // blocks, steals and blocks + steals
+          else if (category === 1219 && cat.length > 0) {
+            for (let subcatName of blocksStealsNames) {
+              const subcat = cat[0].componentizedOffers.filter((offer) => offer.subcategoryName === subcatName)
               const offers = subcat[0].offers[0]
-              if (subcatName === "Pts + Reb + Ast") {
+              if (subcatName === "Blocks ") {
                 const blocksPropData = offers.map((offer) => {
                   return (
                     {
-                      player: offer.label.split(" Points + Assists + Rebounds")[0],
+                      player: offer.label.split(" Blocks")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
                       date: mom,
@@ -622,13 +533,13 @@ module.exports = {
                     }
                   )
                 })
-                propData.PRA.push(blocksPropData)
+                propData.blocks.push(blocksPropData)
               }
-              else if (subcatName === "Pts + Reb") {
+              else if (subcatName === "Steals ") {
                 const stealsPropData = offers.map((offer) => {
                   return (
                     {
-                      player: offer.label.split(" Points + Rebounds")[0],
+                      player: offer.label.split(" Steals")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
                       date: mom,
@@ -650,13 +561,13 @@ module.exports = {
                     }
                   )
                 })
-                propData.PR.push(stealsPropData)
+                propData.steals.push(stealsPropData)
               }
-              else if (subcatName === "Pts + Ast") {
+              else if (subcatName === "Steals + Blocks") {
                 const stealsNblocksPropData = offers.map((offer) => {
                   return (
                     {
-                      player: offer.label.split(" Points + Assists")[0],
+                      player: offer.label.split(" Steals + Blocks")[0],
                       open: offer.isOpen,
                       suspended: offer.isSuspended,
                       date: mom,
@@ -678,39 +589,134 @@ module.exports = {
                     }
                   )
                 })
-                propData.PA.push(stealsNblocksPropData)
+                propData.blocksNsteals.push(stealsNblocksPropData)
               }
-              else if (subcatName === "Ast + Reb") {
-                const stealsNblocksPropData = offers.map((offer) => {
-                  return (
-                    {
-                      player: offer.label.split(" Assists + Rebounds")[0],
-                      open: offer.isOpen,
-                      suspended: offer.isSuspended,
-                      date: mom,
-                      game: event.name,
-                      team1: event.teamShortName1,
-                      team2: event.teamShortName2,
-                      outcomes: [
-                        {
-                          label: offer.outcomes[0].label,
-                          odds: offer.outcomes[0].oddsAmerican,
-                          line: offer.outcomes[0].line
-                        },
-                        {
-                          label: offer.outcomes[1].label,
-                          odds: offer.outcomes[1].oddsAmerican,
-                          line: offer.outcomes[1].line
-                        }
-                      ]
-                    }
-                  )
-                })
-                propData.AR.push(stealsNblocksPropData)
+            }
+          }
+          // Combos
+          else if (category === 583 && cat.length > 0) {
+            for (let subcatName of comboSubcategoryNames) {
+              const subcat = cat[0].componentizedOffers.filter((offer) => offer.subcategoryName === subcatName)
+              if (subcat.length > 0) {
+                const offers = subcat[0].offers[0]
+                if (subcatName === "Pts + Reb + Ast") {
+                  const blocksPropData = offers.map((offer) => {
+                    return (
+                      {
+                        player: offer.label.split(" Points + Assists + Rebounds")[0],
+                        open: offer.isOpen,
+                        suspended: offer.isSuspended,
+                        date: mom,
+                        game: event.name,
+                        team1: event.teamShortName1,
+                        team2: event.teamShortName2,
+                        outcomes: [
+                          {
+                            label: offer.outcomes[0].label,
+                            odds: offer.outcomes[0].oddsAmerican,
+                            line: offer.outcomes[0].line
+                          },
+                          {
+                            label: offer.outcomes[1].label,
+                            odds: offer.outcomes[1].oddsAmerican,
+                            line: offer.outcomes[1].line
+                          }
+                        ]
+                      }
+                    )
+                  })
+                  propData.PRA.push(blocksPropData)
+                }
+                else if (subcatName === "Pts + Reb") {
+                  const stealsPropData = offers.map((offer) => {
+                    return (
+                      {
+                        player: offer.label.split(" Points + Rebounds")[0],
+                        open: offer.isOpen,
+                        suspended: offer.isSuspended,
+                        date: mom,
+                        game: event.name,
+                        team1: event.teamShortName1,
+                        team2: event.teamShortName2,
+                        outcomes: [
+                          {
+                            label: offer.outcomes[0].label,
+                            odds: offer.outcomes[0].oddsAmerican,
+                            line: offer.outcomes[0].line
+                          },
+                          {
+                            label: offer.outcomes[1].label,
+                            odds: offer.outcomes[1].oddsAmerican,
+                            line: offer.outcomes[1].line
+                          }
+                        ]
+                      }
+                    )
+                  })
+                  propData.PR.push(stealsPropData)
+                }
+                else if (subcatName === "Pts + Ast") {
+                  const stealsNblocksPropData = offers.map((offer) => {
+                    return (
+                      {
+                        player: offer.label.split(" Points + Assists")[0],
+                        open: offer.isOpen,
+                        suspended: offer.isSuspended,
+                        date: mom,
+                        game: event.name,
+                        team1: event.teamShortName1,
+                        team2: event.teamShortName2,
+                        outcomes: [
+                          {
+                            label: offer.outcomes[0].label,
+                            odds: offer.outcomes[0].oddsAmerican,
+                            line: offer.outcomes[0].line
+                          },
+                          {
+                            label: offer.outcomes[1].label,
+                            odds: offer.outcomes[1].oddsAmerican,
+                            line: offer.outcomes[1].line
+                          }
+                        ]
+                      }
+                    )
+                  })
+                  propData.PA.push(stealsNblocksPropData)
+                }
+                else if (subcatName === "Ast + Reb") {
+                  const stealsNblocksPropData = offers.map((offer) => {
+                    return (
+                      {
+                        player: offer.label.split(" Assists + Rebounds")[0],
+                        open: offer.isOpen,
+                        suspended: offer.isSuspended,
+                        date: mom,
+                        game: event.name,
+                        team1: event.teamShortName1,
+                        team2: event.teamShortName2,
+                        outcomes: [
+                          {
+                            label: offer.outcomes[0].label,
+                            odds: offer.outcomes[0].oddsAmerican,
+                            line: offer.outcomes[0].line
+                          },
+                          {
+                            label: offer.outcomes[1].label,
+                            odds: offer.outcomes[1].oddsAmerican,
+                            line: offer.outcomes[1].line
+                          }
+                        ]
+                      }
+                    )
+                  })
+                  propData.AR.push(stealsNblocksPropData)
+                }
               }
             }
           }
         }
+      } else {
+        console.log(`Date of the game is for tomorrow! ${moment(time).tz('America/New_York').format('YYYY-MM-DD HH:mm')}`)
       }
     }
 
