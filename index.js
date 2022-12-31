@@ -78,7 +78,7 @@ app.post("/acceptETR", async(req, res) => {
       const returned = await redisClient.get("propdata")
       if (returned) {
         data = JSON.parse(returned)
-        //serverHelper.etrSearch(req.body)
+        serverHelper.registerETRStuff(req.body, data, redisClient)
       }
       await redisClient.set("etrdata", JSON.stringify(req.body), {'EX': 3600})
       res.status(200).json(req.body)
@@ -92,8 +92,8 @@ app.post("/acceptETR", async(req, res) => {
 
 setInterval(async () => {
   const date = new Date();
-  console.log(`Current hour: ${date.getHours()}`)
-  if (date.getHours() >= 17 && date.getHours() <= 23) {  
+  console.log(`Current hour: ${date.getHours()-5}`)
+  if (date.getHours()-5 >= 17 && date.getHours()-5 <= 23) {  
     serverHelper.search(redisClient)
   }
 }, 300000);

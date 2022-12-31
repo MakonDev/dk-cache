@@ -35,7 +35,7 @@ const searchDKEventForProps = async (eventID) => {
 }
 
 module.exports = {
-  registerETRStuff: async function(etrData) {
+  registerETRStuff: async function(chunkedETRData, propData, client) {
     // do the finalData combinations
     let finalData = []
     for (const playerChunk of chunkedETRData) {
@@ -215,9 +215,86 @@ module.exports = {
           date: "N/A"
         }
       }
+      // PRA
+      playerCategoryData = propData.PRA.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["PRA"] = {
+          projection: playerChunk.points + playerChunk.assists + playerChunk.rebounds,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["PRA"] = {
+          projection: playerChunk.points + playerChunk.assists + playerChunk.rebounds,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // PR
+      playerCategoryData = propData.PR.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["PR"] = {
+          projection: playerChunk.points + playerChunk.rebounds,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["PR"] = {
+          projection: playerChunk.points + playerChunk.rebounds,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // PA
+      playerCategoryData = propData.PA.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["PA"] = {
+          projection: playerChunk.points + playerChunk.assists,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["PA"] = {
+          projection: playerChunk.points + playerChunk.assists,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // AR
+      playerCategoryData = propData.AR.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["AR"] = {
+          projection: playerChunk.assists + playerChunk.rebounds,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["AR"] = {
+          projection: playerChunk.assists + playerChunk.rebounds,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      finalData.push(playerChunkData)
     }
-    await client.set("finaldata", JSON.stringify(etrData), {'EX': 3600})
-    return etrData
+    await client.set("finaldata", JSON.stringify(finalData), {'EX': 3600})
+    return finalData
   },
   search: async function(client) {
     const dkEvents = await searchDKForEvents()
