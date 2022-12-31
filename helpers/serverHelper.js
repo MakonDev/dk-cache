@@ -35,10 +35,6 @@ const searchDKEventForProps = async (eventID) => {
 }
 
 module.exports = {
-  etrSearch: async function() {
-    const chunkedETRData = await searchForETRProjections()
-    return chunkedETRData
-  },
   registerETRStuff: async function(etrData) {
     // do the finalData combinations
     let finalData = []
@@ -50,13 +46,40 @@ module.exports = {
       playerChunkData["minutes"] = playerChunk.minutes
       // points
       let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
-      console.log(playerCategoryData)
-      console.log(playerChunk.player)
       if (playerCategoryData.length > 0) {
-
+        playerChunkData["points"] = {
+          projection: playerChunk.points,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date
+        }
       } else {
         playerChunkData["points"] = {
-          
+          projection: playerChunk.points,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
+        }
+      }
+      // assists
+      playerCategoryData = propData.assists.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      if (playerCategoryData.length > 0) {
+        playerChunkData["assists"] = {
+          projection: playerChunk.assists,
+          line: playerCategoryData[0].outcomes[0].line,
+          overOdds: playerCategoryData[0].outcomes[0].odds,
+          underOdds: playerCategoryData[0].outcomes[1].odds,
+          date: playerCategoryData[0].date,
+        }
+      } else {
+        playerChunkData["assists"] = {
+          projection: playerChunk.points,
+          line: -1,
+          overOdds: "N/A",
+          underOdds: "N/A",
+          date: "N/A"
         }
       }
       
