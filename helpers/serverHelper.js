@@ -759,7 +759,7 @@ module.exports = {
     flatArray = [].concat(...propData.PA);
     propData.PA = flatArray
 
-    await client.set("propdata", JSON.stringify(propData), {'EX': 3600})
+    await client.set("propdata", JSON.stringify(propData), {'EX': 42000})
     console.log("Done!")
     return propData
   }
