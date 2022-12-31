@@ -93,7 +93,7 @@ app.post("/acceptETR", async(req, res) => {
 setInterval(async () => {
   const date = new Date();
   console.log(`Current hour: ${date.getHours()}`)
-  if (date.getHours() >= 17 && date.getHours() <= 23) {  
+  if (date.getHours() >= 0 && date.getHours() <= 4) {  
     serverHelper.search(redisClient)
   }
 }, 300000);
