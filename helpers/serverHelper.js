@@ -20,6 +20,11 @@ const searchDKForEvents = async () => {
   return resp
 }
 
+const subtractHours = (numOfHours, date) => {
+  date.setHours(date.getHours() - numOfHours);
+  return date;
+}
+
 const searchDKEventForProps = async (eventID) => {
   const url = `https://sportsbook-us-nh.draftkings.com//sites/US-NH-SB/api/v3/event/${eventID}?format=json`
 
@@ -326,6 +331,7 @@ module.exports = {
       const date = new Date(event.date.slice(0,23)+"Z")
       console.log(event.name)
       console.log(date.toLocaleString())
+      console.log(console.log(subtractHours(5, date)))
       console.log("")
       const firstEvent = await searchDKEventForProps(event.id)
       const eventCategories = firstEvent.eventCategories
