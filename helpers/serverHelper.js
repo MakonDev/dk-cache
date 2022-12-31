@@ -299,7 +299,7 @@ module.exports = {
       finalData.push(playerChunkData)
     }
     console.log(`Done with ${finalData.length} final data points`)
-    await client.set("finaldata", JSON.stringify(finalData), {'EX': 3600})
+    await client.set("finaldata", JSON.stringify(finalData), {'EX': 42000})
     return finalData
   },
   search: async function(client) {
