@@ -1,11 +1,131 @@
 require('dotenv').config()
 const axios = require("axios");
 var moment = require('moment-timezone');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 // Points, Rebounds, Assists, Threes, Combos, Blocks/Steal ("Blocks ", "Steals ", "Steals + Blocks"), Turnovers
 const gameCategoriesWeWant = [1215, 1216, 1217, 1218, 583, 1219, 1220]
 const blocksStealsNames = ["Blocks ", "Steals ", "Steals + Blocks"]
 const comboSubcategoryNames = ["Pts + Reb + Ast","Pts + Reb","Pts + Ast","Ast + Reb"]
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const assemblePlayerAverages = async () => {
+  const pages = [1,2,3,4,5]
+  const page = 0
+  const tables=["#table-6664"]
+  let players = []
+
+  var getElementByXPath = function(a,b){b=document;return b.evaluate(a,b,null,9,null).singleNodeValue}
+
+  for (const page of pages) {
+    const url = `https://basketball.realgm.com/nba/stats/2023/Averages/All/points/All/desc/${page}/Last_5_Games`
+    const resp = await axios.get(url)
+    const dom = new JSDOM(resp.data)
+    //const tbodys = Array.from(dom.window.document.querySelectorAll('tbody'))
+    const table = dom.window.document.evaluate("/html/body/div[2]/div[3]/div/table", dom.window.document, null, 9, null).singleNodeValue
+    const table_rows = Array.from(table.querySelectorAll(`tr`))
+    table_rows.forEach((row) => {
+      let player = {}
+      const tds = Array.from(row.querySelectorAll('td'))
+      for (const index of [...Array(tds.length).keys()]) {
+        if (index === 1) {
+          try {
+            player["name"] =  tds[index].textContent
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 5) {
+          try {
+            player["points"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 9) {
+          try {
+            player["threes"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 17) {
+          try {
+            player["rebounds"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 18) {
+          try {
+            player["assists"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 19) {
+          try {
+            player["steals"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 20) {
+          try {
+            player["blocks"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 21) {
+          try {
+            player["turnovers"] = Number(tds[index].textContent)
+          } catch (e) {
+            console.log(e)
+            continue
+          }
+        } else if (index === 2) {
+          try {
+            //use for other stuff
+            player["bs"] = Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2))
+            player["pra"] = Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2))
+            player["pr"] = Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2))
+            player["pa"] = Number((Number(tds[5].textContent) + Number(tds[17].textContent)).toFixed(2))
+            player["ar"] = Number((Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2))
+          } catch (e) {
+            // console.log(e)
+            continue
+          }
+        }
+      }
+      if (
+        Object.keys(player).includes("name") &&
+        Object.keys(player).includes("points") &&
+        Object.keys(player).includes("assists") &&
+        Object.keys(player).includes("rebounds") &&
+        Object.keys(player).includes("threes") &&
+        Object.keys(player).includes("steals") &&
+        Object.keys(player).includes("blocks") &&
+        Object.keys(player).includes("turnovers") &&
+        Object.keys(player).includes("bs") &&
+        Object.keys(player).includes("pra") &&
+        Object.keys(player).includes("pr") &&
+        Object.keys(player).includes("pa") &&
+        Object.keys(player).includes("ar") 
+        // !players.filter((singlePlayer) => singlePlayer.name)
+      ) {
+        // console.log(`Player: ${Object.keys(player)}`)
+        players.push(player)
+      }
+    })
+  }
+  console.log(`Done with ${players.length} players.`)
+  return players
+}
 
 const searchDKForEvents = async () => {
   const url = 'https://sportsbook-us-nh.draftkings.com//sites/US-NH-SB/api/v5/eventgroups/42648?format=json'
@@ -19,11 +139,6 @@ const searchDKForEvents = async () => {
   });
 
   return resp
-}
-
-const subtractHours = (numOfHours, date) => {
-  date.setHours(date.getHours() - numOfHours);
-  return date;
 }
 
 const searchDKEventForProps = async (eventID) => {
@@ -752,5 +867,6 @@ module.exports = {
     await client.set("propdata", JSON.stringify(propData), {'EX': 42000})
     console.log("Done!")
     return propData
-  }
+  },
+  assemblePlayerAverages
 }

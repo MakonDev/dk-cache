@@ -84,6 +84,15 @@ app.get("/getFinalData", async(req, res) => {
   }
 });
 
+app.get("/getAverages", async(req, res) => {
+  if (req.headers["dk-secret"] === process.env.DK_SECRET) {
+    const data = await serverHelper.assemblePlayerAverages()
+    res.status(200).json(data)
+  } else {
+    res.status(401).json("Endpoint forbidden")
+  }
+});
+
 app.post("/acceptETR", async(req, res) => {
   if (req.headers["dk-secret"] === process.env.DK_SECRET) {
     if (req.body) {
