@@ -15,11 +15,7 @@ function sleep(ms) {
 
 const assemblePlayerAverages = async () => {
   const pages = [1,2,3,4,5]
-  const page = 0
-  const tables=["#table-6664"]
   let players = []
-
-  var getElementByXPath = function(a,b){b=document;return b.evaluate(a,b,null,9,null).singleNodeValue}
 
   for (const page of pages) {
     const url = `https://basketball.realgm.com/nba/stats/2023/Averages/All/points/All/desc/${page}/Last_5_Games`
@@ -156,7 +152,7 @@ const searchDKEventForProps = async (eventID) => {
 }
 
 module.exports = {
-  registerETRStuff: async function(chunkedETRData, propData, client) {
+  registerETRStuff: async function(chunkedETRData, propData, client, avgData) {
     // do the finalData combinations
     let finalData = []
     for (const playerChunk of chunkedETRData) {
@@ -165,6 +161,10 @@ module.exports = {
       playerChunkData["team1"] = playerChunk.team1
       playerChunkData["team2"] = playerChunk.team2
       playerChunkData["minutes"] = playerChunk.minutes
+
+      // average data
+      const averagePlayerData = avgData.find((player) => player.name.toUpperCase() === playerChunk.player.toUpperCase())
+
       // points
       let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
       if (playerCategoryData.length > 0) {
@@ -173,7 +173,8 @@ module.exports = {
           line: Number(playerCategoryData[0].outcomes[0].line),
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
-          date: playerCategoryData[0].date
+          date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.points : -1
         }
       } else {
         playerChunkData["points"] = {
@@ -181,7 +182,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.points : -1
         }
       }
       // assists
@@ -193,6 +195,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.assists : -1
         }
       } else {
         playerChunkData["assists"] = {
@@ -200,7 +203,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.assists : -1
         }
       }
       // threes
@@ -212,6 +216,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.threes : -1
         }
       } else {
         playerChunkData["threes"] = {
@@ -219,7 +224,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.threes : -1
         }
       }
       // rebounds
@@ -231,6 +237,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.rebounds : -1
         }
       } else {
         playerChunkData["rebounds"] = {
@@ -238,7 +245,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.rebounds : -1
         }
       }
       // turnovers
@@ -250,6 +258,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.turnovers : -1
         }
       } else {
         playerChunkData["turnovers"] = {
@@ -257,7 +266,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.turnovers : -1
         }
       }
       // blocks
@@ -269,6 +279,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.blocks : -1
         }
       } else {
         playerChunkData["blocks"] = {
@@ -276,7 +287,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.blocks : -1
         }
       }
       // steals
@@ -288,6 +300,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.steals : -1
         }
       } else {
         playerChunkData["steals"] = {
@@ -295,7 +308,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.steals : -1
         }
       }
       // blocksNsteals
@@ -307,6 +321,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.bs : -1
         }
       } else {
         playerChunkData["blocksNsteals"] = {
@@ -314,7 +329,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.bs : -1
         }
       }
       // PRA
@@ -326,6 +342,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.pra : -1
         }
       } else {
         playerChunkData["PRA"] = {
@@ -333,7 +350,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.pra : -1
         }
       }
       // PR
@@ -345,6 +363,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.pr : -1
         }
       } else {
         playerChunkData["PR"] = {
@@ -352,7 +371,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.pr : -1
         }
       }
       // PA
@@ -364,6 +384,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.pa : -1
         }
       } else {
         playerChunkData["PA"] = {
@@ -371,7 +392,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.pa : -1
         }
       }
       // AR
@@ -383,6 +405,7 @@ module.exports = {
           overOdds: playerCategoryData[0].outcomes[0].odds,
           underOdds: playerCategoryData[0].outcomes[1].odds,
           date: playerCategoryData[0].date,
+          average: averagePlayerData ? averagePlayerData.ar : -1
         }
       } else {
         playerChunkData["AR"] = {
@@ -390,7 +413,8 @@ module.exports = {
           line: -1,
           overOdds: "N/A",
           underOdds: "N/A",
-          date: "N/A"
+          date: "N/A",
+          average: averagePlayerData ? averagePlayerData.ar : -1
         }
       }
       finalData.push(playerChunkData)

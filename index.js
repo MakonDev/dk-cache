@@ -98,14 +98,16 @@ app.post("/acceptETR", async(req, res) => {
     if (req.body) {
       let data = []
       const returned = await redisClient.get("propdata")
+      let finalData = []
       if (returned) {
         console.log("got returned propdata")
         data = JSON.parse(returned)
-        await serverHelper.registerETRStuff(req.body.chunkedETRData, data, redisClient)
+        const averageData = await serverHelper.assemblePlayerAverages()
+        finalData = await serverHelper.registerETRStuff(req.body.chunkedETRData, data, redisClient, averageData)
         console.log("done registering")
       }
       await redisClient.set("etrdata", JSON.stringify(req.body), {'EX': 3600})
-      res.status(200).json(req.body)
+      res.status(200).json(finalData)
     } else {
       res.status(200).json("No JSON body passed, no token searched.")
     }
