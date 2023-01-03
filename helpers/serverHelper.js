@@ -30,7 +30,12 @@ const assemblePlayerAverages = async () => {
       for (const index of [...Array(tds.length).keys()]) {
         if (index === 1) {
           try {
-            player["name"] =  tds[index].textContent
+            let baseName = tds[index].textContent
+            baseName = baseName.replaceAll(" SR","")
+            baseName = baseName.replaceAll(" JR","")
+            baseName = baseName.replaceAll(" II","")
+            baseName = baseName.replaceAll(".","")
+            player["name"] = baseName
           } catch (e) {
             console.log(e)
             continue
@@ -157,16 +162,23 @@ module.exports = {
     let finalData = []
     for (const playerChunk of chunkedETRData) {
       let playerChunkData = {}
-      playerChunkData["player"] = playerChunk.player
+
+      let baseName = playerChunk.player
+      baseName = baseName.replaceAll(" SR","")
+      baseName = baseName.replaceAll(" JR","")
+      baseName = baseName.replaceAll(" II","")
+      baseName = baseName.replaceAll(".","")
+
+      playerChunkData["player"] = baseName
       playerChunkData["team1"] = playerChunk.team1
       playerChunkData["team2"] = playerChunk.team2
       playerChunkData["minutes"] = playerChunk.minutes
 
       // average data
-      const averagePlayerData = avgData.find((player) => player.name.toUpperCase() === playerChunk.player.toUpperCase())
+      const averagePlayerData = avgData.find((player) => player.name.toUpperCase() === baseName.toUpperCase())
 
       // points
-      let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === playerChunk.player.toUpperCase())
+      let playerCategoryData = propData.points.filter((line) => line.player.toUpperCase() === baseName.toUpperCase())
       if (playerCategoryData.length > 0) {
         playerChunkData["points"] = {
           projection: Number(playerChunk.points),
@@ -452,7 +464,6 @@ module.exports = {
       const date = new Date(event.date.slice(0,23)+"Z")
       const time = date.getTime()
       const mom = moment(time).tz('America/New_York').format('YYYY-MM-DD HH:mm')
-      const currentdate = new Date()
       const currenttime = date.getTime()
       console.log(mom)
       console.log(event.name)
@@ -887,6 +898,15 @@ module.exports = {
     // flatten PA
     flatArray = [].concat(...propData.PA);
     propData.PA = flatArray
+
+    flatArray = flatArray.map((single) => {
+      let baseName = single.player
+      baseName = baseName.replaceAll(" SR","")
+      baseName = baseName.replaceAll(" JR","")
+      baseName = baseName.replaceAll(" II","")
+      baseName = baseName.replaceAll(".","")
+      single["player"] = baseName
+    })
 
     await client.set("propdata", JSON.stringify(propData), {'EX': 42000})
     console.log("Done!")
