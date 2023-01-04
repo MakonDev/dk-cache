@@ -941,7 +941,7 @@ module.exports = {
   assemblePlayerAverages,
   getInjuryInfo: async function(client) {
     const date = new Date();
-    const day = date.getDate()-1
+    const day = date.getDate()
     const month = date.getMonth()+1
     console.log(`Current Day: ${date.getDate()}`)
     console.log(`Current Month: ${date.getMonth()+1}`)

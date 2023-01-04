@@ -144,7 +144,7 @@ setInterval(async () => {
 setInterval(async () => {
   const date = new Date();
   console.log(`Current hour: ${date.getHours()}`)
-  if (date.getHours() >= 15) {  
+  if (date.getHours() >= 14) {  
     serverHelper.getInjuryInfo(redisClient)
   } else {
     console.log("Out of hours!")
