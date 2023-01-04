@@ -8,6 +8,32 @@ const { JSDOM } = jsdom;
 const gameCategoriesWeWant = [1215, 1216, 1217, 1218, 583, 1219, 1220]
 const blocksStealsNames = ["Blocks ", "Steals ", "Steals + Blocks"]
 const comboSubcategoryNames = ["Pts + Reb + Ast","Pts + Reb","Pts + Ast","Ast + Reb"]
+const teams = [
+  {
+    team: "Boston Celtics",
+    short: "BOS"
+  },
+  {
+    team: "Milwaukee Bucks",
+    short: "MIL"
+  },
+  {
+    team: "Washington Wizards",
+    short: "WAS"
+  },
+  {
+    team: "Oklahoma City Thunder",
+    short: "OKC"
+  },
+  {
+    team: "Sacramento Kings",
+    short: "SAC"
+  },
+  {
+    team: "Utah Jazz",
+    short: "UTA"
+  }
+]
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -912,5 +938,89 @@ module.exports = {
     console.log("Done!")
     return propData
   },
-  assemblePlayerAverages
+  assemblePlayerAverages,
+  getInjuryInfo: async function(client) {
+    const date = new Date();
+    const day = date.getDate()-1
+    const month = date.getMonth()+1
+    console.log(`Current Day: ${date.getDate()}`)
+    console.log(`Current Month: ${date.getMonth()+1}`)
+    const url = `https://underdognetwork.com/basketball/nba-news-and-fantasy-basketball-notes-${month}-${day}`
+    const resp = await axios.get(url)
+    const dom = new JSDOM(resp.data)
+    const bodyData = dom.window.document.evaluate("/html/body/div/div/div/div[4]", dom.window.document, null, 9, null).singleNodeValue
+    const nodes = Array.from(bodyData.querySelectorAll("h2"))
+    let teamList = []
+    nodes.map((node) => {
+      const longTeam = node.textContent.split(" News")[0]
+      const filteredTeam = teams.filter((team) => team.team === longTeam)
+      teamList.push(filteredTeam[0].short)
+    })
+
+    const ps = Array.from(bodyData.querySelectorAll("p"))
+    let finalInjuryReport = []
+    let lineups = []
+    let pastInitial = 0
+    let singleGameStuff = []
+    let single = []
+    let teamText = []
+    let singleGame = 0
+    ps.map((node) => {
+      const text = node.textContent
+      if (
+        !text.includes("Deposit") && 
+        !text.includes("https") && 
+        !text.includes("Each day") &&
+        !text.includes("Recent") &&
+        !text.includes("Twitter") &&
+        !text.includes("Key NBA")
+      ) {
+        if (text.includes(") — ")) {
+          if (pastInitial === 1) {
+            let name = text.split(" (")[0]
+            name = name.replaceAll(" SR","")
+            name = name.replaceAll(" JR","")
+            name = name.replaceAll(" II","")
+            name = name.replaceAll(".","")
+            let injury = text.split(") — ")[1]
+            singleGame = 1
+            if (singleGame === 1) {
+              single.push([name, injury])
+            }
+
+          }
+        } else {
+          if (singleGame === 1) {
+            singleGameStuff.push(single)
+          }
+          singleGame = 0
+          single = []
+          pastInitial = 1
+          //console.log(text)
+          if (text.includes("Confirmed Lineup:")) {
+            let lineup = text.split("Confirmed Lineup: ")[1]
+            const splitLineup = lineup.split(", ")
+            lineups.push(splitLineup)
+          } else {
+            if (text) {
+              teamText.push(text)
+            }
+          }
+        }
+      }
+    })
+
+    for (const int of [...Array(singleGameStuff.length).keys()]) {
+      finalInjuryReport.push({
+        team: teamList[int],
+        injuries: singleGameStuff[int],
+        teamDescription: teamText[int],
+        starters: lineups[int]
+      })
+    }
+
+    console.log("Done!")
+    await client.set("injuryData", JSON.stringify(finalInjuryReport), {'EX': 100000})
+    return finalInjuryReport
+  }
 }
