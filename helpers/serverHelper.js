@@ -32,6 +32,94 @@ const teams = [
   {
     team: "Utah Jazz",
     short: "UTA"
+  },
+  {
+    team: "Memphis Grizzlies",
+    short: "MEM"
+  },
+  {
+    team: "Charlotte Hornets",
+    short: "CHO"
+  },
+  {
+    team: "Phoenix Suns",
+    short: "PHO"
+  },
+  {
+    team: "Cleveland Cavaliers",
+    short: "CLE"
+  },
+  {
+    team: "Orlando Magic",
+    short: "ORL"
+  },
+  {
+    team: "Indiana Pacers",
+    short: "IND"
+  },
+  {
+    team: "Philadelphia 76ers",
+    short: "PHI"
+  },
+  {
+    team: "San Antonio Spurs",
+    short: "SAS"
+  },
+  {
+    team: "New York Knicks",
+    short: "NYK"
+  },
+  {
+    team: "Toronto Raptors",
+    short: "TOR"
+  },
+  {
+    team: "Brooklyn Nets",
+    short: "BRK"
+  },
+  {
+    team: "Chicago Bulls",
+    short: "CHI"
+  },
+  {
+    team: "Portland Trail Blazers",
+    short: "POR"
+  },
+  {
+    team: "Minnesota Timberwolves",
+    short: "MIN"
+  },
+  {
+    team: "Houston Rockets",
+    short: "HOU"
+  },
+  {
+    team: "New Orleans Pelicans",
+    short: "NOP"
+  },
+  {
+    team: "Detroit Pistons",
+    short: "DET"
+  },
+  {
+    team: "Golden State Warriors",
+    short: "GSW"
+  },
+  {
+    team: "Miami Heat",
+    short: "MIA"
+  },
+  {
+    team: "Los Angeles Lakers",
+    short: "LAL"
+  },
+  {
+    team: "Atlanta Hawks",
+    short: "ATL"
+  },
+  {
+    team: "Los Angeles Clippers",
+    short: "LAC"
   }
 ]
 
