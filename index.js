@@ -96,12 +96,12 @@ app.get("/getAverages", async(req, res) => {
 app.get("/getInjuries", async(req, res) => {
   if (req.headers["dk-secret"] === process.env.DK_SECRET) {
     let data = []
-    const returned = await redisClient.get("injuryData")
-    if (returned) {
-      data= JSON.parse(returned)
-    } else {
+    // const returned = await redisClient.get("injuryData")
+    // if (returned) {
+    //   data= JSON.parse(returned)
+    // } else {
       data = await serverHelper.getInjuryInfo(redisClient)
-    }
+    // }
     res.status(200).json(data)
   } else {
     res.status(401).json("Endpoint forbidden")

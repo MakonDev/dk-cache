@@ -1138,13 +1138,9 @@ module.exports = {
         team: teamList[int]
       })
     }
-    // console.log(teamList.length)
-    // console.log(singleGameStuff.length)
-    // console.log(teamText.length)
-    // console.log(lineups.length)
 
     console.log("Done!")
-    await client.set("injuryData", JSON.stringify(finalInjuryReport), {'EX': 100000})
+    await client.set("injuryData", JSON.stringify(finalReturn), {'EX': 100000})
     return finalReturn
   }
 }
