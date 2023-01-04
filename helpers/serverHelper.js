@@ -75,7 +75,7 @@ const teams = [
   },
   {
     team: "Brooklyn Nets",
-    short: "BRK"
+    short: "BKN"
   },
   {
     team: "Chicago Bulls",
