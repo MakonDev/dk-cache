@@ -39,11 +39,11 @@ const teams = [
   },
   {
     team: "Charlotte Hornets",
-    short: "CHO"
+    short: "CHA"
   },
   {
     team: "Phoenix Suns",
-    short: "PHO"
+    short: "PHX"
   },
   {
     team: "Cleveland Cavaliers",
