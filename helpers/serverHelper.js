@@ -147,6 +147,8 @@ const assemblePlayerAverages = async () => {
             let baseName = tds[index].textContent
             baseName = baseName.replaceAll(" SR","")
             baseName = baseName.replaceAll(" JR","")
+            baseName = baseName.replaceAll(" Sr","")
+            baseName = baseName.replaceAll(" Jr","")
             baseName = baseName.replaceAll(" II","")
             baseName = baseName.replaceAll(".","")
             player["name"] = baseName
@@ -281,6 +283,8 @@ module.exports = {
       baseName = baseName.replaceAll(" SR","")
       baseName = baseName.replaceAll(" JR","")
       baseName = baseName.replaceAll(" II","")
+      baseName = baseName.replaceAll(" Sr","")
+      baseName = baseName.replaceAll(" Jr","")
       baseName = baseName.replaceAll(".","")
 
       playerChunkData["player"] = baseName
@@ -1047,12 +1051,10 @@ module.exports = {
 
     const ps = Array.from(bodyData.querySelectorAll("p"))
     let finalInjuryReport = []
-    let lineups = []
-    let pastInitial = 0
-    let singleGameStuff = []
-    let single = []
-    let teamText = []
-    let singleGame = 0
+    let readyForInjuries = 1
+    let sectionsStarted = 0
+    let currentTeamEntry = {}
+    let currentInjuries = []
     ps.map((node) => {
       const text = node.textContent
       if (
@@ -1063,52 +1065,86 @@ module.exports = {
         !text.includes("Twitter") &&
         !text.includes("Key NBA")
       ) {
-        if (text.includes(") — ")) {
-          if (pastInitial === 1) {
+        if (text.includes(") — ") || text.includes(")— ")) {
+          if (readyForInjuries === 1 && sectionsStarted == 1) {
             let name = text.split(" (")[0]
             name = name.replaceAll(" SR","")
             name = name.replaceAll(" JR","")
+            name = name.replaceAll(" Sr","")
+            name = name.replaceAll(" Jr","")
             name = name.replaceAll(" II","")
             name = name.replaceAll(".","")
-            let injury = text.split(") — ")[1]
-            singleGame = 1
-            if (singleGame === 1) {
-              single.push([name, injury])
+            let injury = ""
+            if (text.includes(") — ")) {
+              injury = text.split(") — ")[1]
+            } else if (text.includes(")— ")) {
+              injury = text.split(")— ")[1]
             }
+            
+            currentInjuries.push([name.trim(), injury])
+          }
+        } else if (text.includes("Confirmed Lineup:") || text.includes("Projected Lineup:")) {
+          sectionsStarted = 1
+          readyForInjuries = 1
+          if (Object.keys(currentTeamEntry).length > 0) {
+            if (!Object.keys(currentTeamEntry).includes("injuries")) {
+              currentTeamEntry["injuries"] = currentInjuries
+            }
+            if (!Object.keys(currentTeamEntry).includes("description")) {
+              currentTeamEntry["description"] = ""
+            }
+            finalInjuryReport.push(currentTeamEntry)
+            currentInjuries = []
+            currentTeamEntry = {}
+          }
+          let lineup = text.split(" Lineup: ")[1]
+          const splitLineup = lineup.split(", ").map((name) => {
+            name = name.replaceAll(" SR","")
+            name = name.replaceAll(" Sr","")
+            name = name.replaceAll(" Jr","")
+            name = name.replaceAll(" JR","")
+            name = name.replaceAll(" II","")
+            name = name.replaceAll(".","")
+            return name.trim()
+          })
 
-          }
+          currentTeamEntry["lineup"] = splitLineup
         } else {
-          if (singleGame === 1) {
-            singleGameStuff.push(single)
+          readyForInjuries = 0
+          if (!Object.keys(currentTeamEntry).includes("injuries")) {
+            currentTeamEntry["injuries"] = currentInjuries
           }
-          singleGame = 0
-          single = []
-          pastInitial = 1
-          //console.log(text)
-          if (text.includes("Confirmed Lineup:")) {
-            let lineup = text.split("Confirmed Lineup: ")[1]
-            const splitLineup = lineup.split(", ")
-            lineups.push(splitLineup)
-          } else {
-            if (text) {
-              teamText.push(text)
-            }
+          if (text) {
+            currentTeamEntry["description"] = text
           }
         }
       }
     })
 
-    for (const int of [...Array(singleGameStuff.length).keys()]) {
-      finalInjuryReport.push({
-        team: teamList[int],
-        injuries: singleGameStuff[int],
-        teamDescription: teamText[int],
-        starters: lineups[int]
+    if (Object.keys(currentTeamEntry).length > 0) {
+      if (!Object.keys(currentTeamEntry).includes("injuries")) {
+        currentTeamEntry["injuries"] = currentInjuries
+      }
+      if (!Object.keys(currentTeamEntry).includes("description")) {
+        currentTeamEntry["description"] = ""
+      }
+      finalInjuryReport.push(currentTeamEntry)
+    }
+
+    let finalReturn = []
+    for (const int of [...Array(teamList.length).keys()]) {
+      finalReturn.push({
+        ...finalInjuryReport[int],
+        team: teamList[int]
       })
     }
+    // console.log(teamList.length)
+    // console.log(singleGameStuff.length)
+    // console.log(teamText.length)
+    // console.log(lineups.length)
 
     console.log("Done!")
     await client.set("injuryData", JSON.stringify(finalInjuryReport), {'EX': 100000})
-    return finalInjuryReport
+    return finalReturn
   }
 }
