@@ -3,6 +3,7 @@ const axios = require("axios");
 var moment = require('moment-timezone');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+const { Poisson } = require('@stdlib/stats-base-dists-poisson');
 
 // Points, Rebounds, Assists, Threes, Combos, Blocks/Steal ("Blocks ", "Steals ", "Steals + Blocks"), Turnovers
 const gameCategoriesWeWant = [1215, 1216, 1217, 1218, 583, 1219, 1220]
@@ -167,6 +168,20 @@ const assemblePlayerAverages = async () => {
         } else if (index === 5) {
           try {
             player["points"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["pointsUnderOdds"] = Math.round(americanUnderOdds)
+              player["pointsOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["pointsUnderOdds"] = 0
+              player["pointsOverOdds"] = 0
+            }
           } catch (e) {
             console.log(e)
             continue
@@ -174,6 +189,20 @@ const assemblePlayerAverages = async () => {
         } else if (index === 9) {
           try {
             player["threes"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["threesUnderOdds"] = Math.round(americanUnderOdds)
+              player["threesOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["threesUnderOdds"] = 0
+              player["threesOverOdds"] = 0
+            }
           } catch (e) {
             console.log(e)
             continue
@@ -181,6 +210,20 @@ const assemblePlayerAverages = async () => {
         } else if (index === 17) {
           try {
             player["rebounds"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["reboundsUnderOdds"] = Math.round(americanUnderOdds)
+              player["reboundsOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["reboundsUnderOdds"] = 0
+              player["reboundsOverOdds"] = 0
+            }
           } catch (e) {
             console.log(e)
             continue
@@ -188,6 +231,20 @@ const assemblePlayerAverages = async () => {
         } else if (index === 18) {
           try {
             player["assists"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["assistsUnderOdds"] = Math.round(americanUnderOdds)
+              player["assistsOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["assistsUnderOdds"] = 0
+              player["assistsOverOdds"] = 0
+            }
           } catch (e) {
             console.log(e)
             continue
@@ -195,6 +252,21 @@ const assemblePlayerAverages = async () => {
         } else if (index === 19) {
           try {
             player["steals"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["stealsUnderOdds"] = Math.round(americanUnderOdds)
+              player["stealsOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["stealsUnderOdds"] = 0
+              player["stealsOverOdds"] = 0
+            }
+            
           } catch (e) {
             console.log(e)
             continue
@@ -202,6 +274,21 @@ const assemblePlayerAverages = async () => {
         } else if (index === 20) {
           try {
             player["blocks"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent) > 0 ) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["blocksUnderOdds"] = Math.round(americanUnderOdds)
+              player["blocksOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["blocksUnderOdds"] = 0
+              player["blocksOverOdds"] = 0
+            }
+            
           } catch (e) {
             console.log(e)
             continue
@@ -209,6 +296,20 @@ const assemblePlayerAverages = async () => {
         } else if (index === 21) {
           try {
             player["turnovers"] = Number(tds[index].textContent)
+            if (Number(tds[index].textContent)) {
+              const dist = new Poisson(Number(tds[index].textContent))
+              const underProb = dist.cdf(Number(tds[index].textContent))
+              const overProb = 1-dist.cdf(Number(tds[index].textContent))
+              const decimalUnderOdds = 1/underProb
+              const decimalOverOdds = 1/overProb
+              const americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              const americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["turnoversUnderOdds"] = Math.round(americanUnderOdds)
+              player["turnoversOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["turnoversUnderOdds"] = 0
+              player["turnoversOverOdds"] = 0
+            }
           } catch (e) {
             console.log(e)
             continue
@@ -217,12 +318,87 @@ const assemblePlayerAverages = async () => {
           try {
             //use for other stuff
             player["bs"] = Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2))
+            if (Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2)) > 0) {
+              let dist = new Poisson(Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2)))
+              let underProb = dist.cdf(Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2)))
+              let overProb = 1-dist.cdf(Number((Number(tds[19].textContent) + Number(tds[20].textContent)).toFixed(2)))
+              let decimalUnderOdds = 1/underProb
+              let decimalOverOdds = 1/overProb
+              let americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              let americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["bsUnderOdds"] = Math.round(americanUnderOdds)
+              player["bsOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["bsUnderOdds"] = 0
+              player["bsOverOdds"] = 0
+            }
+
             player["pra"] = Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2))
+            if (Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)) > 0) {
+              let dist = new Poisson(Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let underProb = dist.cdf(Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let overProb = 1-dist.cdf(Number((Number(tds[5].textContent) + Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let decimalUnderOdds = 1/underProb
+              let decimalOverOdds = 1/overProb
+              let americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              let americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["praUnderOdds"] = Math.round(americanUnderOdds)
+              player["praOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["praUnderOdds"] = 0
+              player["praOverOdds"] = 0
+            }
+
             player["pr"] = Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2))
+            if (Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2)) > 0) {
+              let dist = new Poisson(Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let underProb = dist.cdf(Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let overProb = 1-dist.cdf(Number((Number(tds[5].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let decimalUnderOdds = 1/underProb
+              let decimalOverOdds = 1/overProb
+              let americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              let americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["prUnderOdds"] = Math.round(americanUnderOdds)
+              player["prOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["prUnderOdds"] = 0
+              player["prOverOdds"] = 0
+            }
+
             player["pa"] = Number((Number(tds[5].textContent) + Number(tds[17].textContent)).toFixed(2))
+            if (Number((Number(tds[5].textContent) + Number(tds[17].textContent)).toFixed(2)) > 0) {
+              let dist = new Poisson(Number((Number(tds[5].textContent) + Number(tds[17].textContent)).toFixed(2)))
+              let underProb = dist.cdf(Number((Number(tds[5].textContent) + Number(tds[17].textContent))).toFixed(2))
+              let overProb = 1-dist.cdf(Number((Number(tds[5].textContent) + Number(tds[17].textContent))).toFixed(2))
+              let decimalUnderOdds = 1/underProb
+              let decimalOverOdds = 1/overProb
+              let americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              let americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["paUnderOdds"] = Math.round(americanUnderOdds)
+              player["paOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["paUnderOdds"] = 0
+              player["paOverOdds"] = 0
+            }
+
             player["ar"] = Number((Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2))
+            if (Number((Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)) > 0) {
+              let dist = new Poisson(Number((Number(tds[17].textContent) + Number(tds[18].textContent)).toFixed(2)))
+              let underProb = dist.cdf(Number((Number(tds[17].textContent) + Number(tds[18].textContent))).toFixed(2))
+              let overProb = 1-dist.cdf(Number((Number(tds[17].textContent) + Number(tds[18].textContent))).toFixed(2))
+              let decimalUnderOdds = 1/underProb
+              let decimalOverOdds = 1/overProb
+              let americanUnderOdds = decimalUnderOdds >= 2 ? (decimalUnderOdds-1)*100 : (-100)/(decimalUnderOdds-1)
+              let americanOverOdds = decimalOverOdds >= 2 ? (decimalOverOdds-1)*100 : (-100)/(decimalOverOdds-1)
+              player["arUnderOdds"] = Math.round(americanUnderOdds)
+              player["arOverOdds"] = Math.round(americanOverOdds)
+            } else {
+              player["arUnderOdds"] = 0
+              player["arOverOdds"] = 0
+            }
+
           } catch (e) {
-            // console.log(e)
+            console.log(e)
             continue
           }
         }
@@ -243,12 +419,12 @@ const assemblePlayerAverages = async () => {
         Object.keys(player).includes("ar") 
         // !players.filter((singlePlayer) => singlePlayer.name)
       ) {
-        // console.log(`Player: ${Object.keys(player)}`)
         players.push(player)
       }
     })
     await sleep(500)
   }
+
   console.log(`Done with ${players.length} players.`)
   return players
 }
