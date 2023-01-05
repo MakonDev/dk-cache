@@ -120,6 +120,10 @@ const teams = [
   {
     team: "Los Angeles Clippers",
     short: "LAC"
+  },
+  {
+    team: "Dallas Mavericks",
+    short: "DAL"
   }
 ]
 
@@ -132,7 +136,7 @@ const assemblePlayerAverages = async () => {
   let players = []
 
   for (const page of pages) {
-    const url = `https://basketball.realgm.com/nba/stats/2023/Averages/All/points/All/desc/${page}/Last_5_Games`
+    const url = `https://basketball.realgm.com/nba/stats/2023/Averages/All/points/All/desc/${page}/Last_10_Games`
     const resp = await axios.get(url)
     const dom = new JSDOM(resp.data)
     //const tbodys = Array.from(dom.window.document.querySelectorAll('tbody'))
@@ -239,6 +243,7 @@ const assemblePlayerAverages = async () => {
         players.push(player)
       }
     })
+    await sleep(500)
   }
   console.log(`Done with ${players.length} players.`)
   return players
