@@ -1050,6 +1050,7 @@ module.exports = {
     let teamList = []
     nodes.map((node) => {
       const longTeam = node.textContent.split(" News")[0]
+      console.log(longTeam)
       const filteredTeam = teams.filter((team) => team.team === longTeam)
       teamList.push(filteredTeam[0].short)
     })
