@@ -124,6 +124,10 @@ const teams = [
   {
     team: "Dallas Mavericks",
     short: "DAL"
+  },
+  {
+    team: "Denver Nuggets",
+    short: "DEN"
   }
 ]
 
