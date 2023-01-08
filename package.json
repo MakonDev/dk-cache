@@ -13,6 +13,7 @@
   "author": "Nick Sadler",
   "license": "ISC",
   "dependencies": {
+    "@stdlib/stats": "^0.0.13",
     "@stdlib/stats-base-dists-poisson": "^0.0.7",
     "axios": "^0.27.2",
     "body-parser": "^1.20.1",
