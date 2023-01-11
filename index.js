@@ -140,7 +140,7 @@ setInterval(async () => {
   } else {
     console.log("Out of hours!")
   }
-}, 300000);
+}, 120000);
 
 setInterval(async () => {
   const date = new Date();
