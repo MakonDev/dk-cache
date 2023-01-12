@@ -136,7 +136,18 @@ setInterval(async () => {
   const date = new Date();
   console.log(`Current hour: ${date.getHours()}`)
   if (date.getHours() < 5 || date.getHours() >= 15) {  
-    serverHelper.search(redisClient)
+    const propdata = await serverHelper.search(redisClient)
+    let data = []
+    const returned = await redisClient.get("etrdata")
+    if (returned) {
+      data = JSON.parse(returned)
+    }
+    if (Object.keys(data).length > 0) {
+      console.log("I'm doing it!")
+      const averageData = await serverHelper.assemblePlayerAverages()
+      await serverHelper.registerETRStuff(data.chunkedETRData, propdata, redisClient, averageData)
+    }
+    console.log("I'm done refreshing")
   } else {
     console.log("Out of hours!")
   }
